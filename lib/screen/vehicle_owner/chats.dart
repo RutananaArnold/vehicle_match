@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:vehicle_match/controllers/vehicle_owner_chats_controller.dart';
 
 class VehicleOwnerChats extends StatefulWidget {
   const VehicleOwnerChats({Key? key}) : super(key: key);
@@ -14,7 +13,7 @@ class _VehicleOwnerChatsState extends State<VehicleOwnerChats> {
   @override
   void initState() {
     super.initState();
-    vehicleOwnerChatController.getFirestoreChats();
+    // vehicleOwnerChatController.getFirestoreChats();
   }
 
   @override
@@ -26,37 +25,9 @@ class _VehicleOwnerChatsState extends State<VehicleOwnerChats> {
           backgroundColor: Colors.green,
           elevation: 0,
         ),
-        body: GetBuilder<VehicleOwnerChatController>(
-            init: VehicleOwnerChatController(),
-            builder: (chatLogs) {
-              return ListView.builder(
-                  itemCount: chatLogs.chatsNow.length,
-                  itemBuilder: (context, index) {
-                    var chat = chatLogs.chatsNow[index];
-                    print(chat.content);
-                    if (chat.idTo == FirebaseAuth.instance.currentUser!.uid) {
-                      return Card(
-                        child: Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: ListTile(
-                            leading: const CircleAvatar(),
-                            title: Text(
-                              chat.idFrom,
-                              softWrap: true,
-                            ),
-                            subtitle: Text(
-                              chat.content,
-                              softWrap: true,
-                            ),
-                            onTap: (){},
-                          ),
-                        ),
-                      );
-                    } else {
-                      return const SizedBox.shrink();
-                    }
-                  });
-            }));
+        body: Column(
+          children: [Text("No chats found")],
+        ));
   }
 
   //  Widget buildItem(BuildContext context, DocumentSnapshot? documentSnapshot) {

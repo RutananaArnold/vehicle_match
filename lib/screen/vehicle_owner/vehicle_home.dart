@@ -68,52 +68,81 @@ class _VehicleOwnerHomeState extends State<VehicleOwnerHome> {
         stream: requestsStream,
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasError) {
-            return const Text('Something went wrong');
+            return const Text(
+              'Something went wrong',
+              style: TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20),
+            );
           }
 
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: Text("Loading"));
+            return const Center(
+                child: Text(
+              "Loading",
+              style: TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20),
+            ));
           }
 
           return ListView(
             children: snapshot.data!.docs.map((DocumentSnapshot document) {
               Map<String, dynamic> data =
                   document.data()! as Map<String, dynamic>;
-              return Padding(
-                padding: const EdgeInsets.only(top: 10, bottom: 10),
-                child: ListTile(
-                  shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(15),
-                          topRight: Radius.circular(15),
-                          bottomRight: Radius.circular(15),
-                          bottomLeft: Radius.circular(15))),
-                  tileColor: Colors.green[200],
-                  title: RichText(
-                      text: TextSpan(
-                          text: "Pickup Location: ${data['pickupLocation']} \n",
-                          style: const TextStyle(
-                              color: Colors.black, fontWeight: FontWeight.bold),
-                          children: [
-                        TextSpan(text: "Destination: ${data['destLocation']}")
-                      ])),
-                  subtitle: RichText(
-                      text: TextSpan(
-                          text: "Departure Time: ${data['timeOfDeparture']} \n",
-                          style: const TextStyle(
-                              color: Colors.black, fontWeight: FontWeight.bold),
-                          children: [
-                        TextSpan(
-                            text: "Departure Date: ${data['dateOfDeparture']}")
-                      ])),
-                  trailing: Chip(
-                      label: Text(
-                    "Seats: ${data['seatsNumber']}",
-                    style: const TextStyle(
-                        color: Colors.black, fontWeight: FontWeight.bold),
-                  )),
-                ),
-              );
+              return data['vehicleUserId'] ==
+                      FirebaseAuth.instance.currentUser!.uid
+                  ? Card(
+                      elevation: 200,
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 10, bottom: 10),
+                        child: ListTile(
+                          shape: const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(15),
+                                  topRight: Radius.circular(15),
+                                  bottomRight: Radius.circular(15),
+                                  bottomLeft: Radius.circular(15))),
+                          title: RichText(
+                              text: TextSpan(
+                                  text:
+                                      "Pickup Location: ${data['pickupLocation']} \n",
+                                  style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+                                  children: [
+                                TextSpan(
+                                    text:
+                                        "Destination: ${data['destLocation']}")
+                              ])),
+                          subtitle: RichText(
+                              text: TextSpan(
+                                  text:
+                                      "Departure Time: ${data['timeOfDeparture']} \n",
+                                  style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+                                  children: [
+                                TextSpan(
+                                    text:
+                                        "Departure Date: ${data['dateOfDeparture']}")
+                              ])),
+                          trailing: Chip(
+                              label: Text(
+                            "Seats: ${data['seatsNumber']}",
+                            style: const TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold),
+                          )),
+                        ),
+                      ),
+                    )
+                  : const Center(
+                      child: Text(
+                      "You haven't posted any vehicle details",
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20),
+                    ));
             }).toList(),
           );
         },

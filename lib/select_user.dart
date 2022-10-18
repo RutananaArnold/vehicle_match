@@ -14,9 +14,8 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.transparent,
-      body: Container(
-        color: Colors.green[200],
+      backgroundColor: Colors.green[200],
+      body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -37,50 +36,74 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
             const SizedBox(
               height: 60,
             ),
-            const Text("Vehicle Owner"),
+            const Text("Vehicle Owner",
+                style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold)),
             const SizedBox(
               height: 10,
             ),
             Center(
               child: InkWell(
-                onTap: () {
-                  Navigator.of(context).pushAndRemoveUntil(
-                      MaterialPageRoute(
-                          builder: (BuildContext context) =>
-                              const VehicleAuthGate()),
-                      (route) => true);
-                },
-                child: const GlowIcon(
-                  Icons.settings,
-                  size: 80,
-                  blurRadius: 9,
-                  color: Colors.blue,
-                ),
-              ),
+                  onTap: () {
+                    Navigator.of(context).pushAndRemoveUntil(
+                        MaterialPageRoute(
+                            builder: (BuildContext context) =>
+                                const VehicleAuthGate()),
+                        (route) => true);
+                  },
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(20),
+                    child: SizedBox(
+                      height: 100,
+                      width: 100,
+                      child: Card(
+                        elevation: 250,
+                        child: Padding(
+                          padding: const EdgeInsets.all(10),
+                          child: Image.asset("Assets/images/vintage-car.png"),
+                        ),
+                      ),
+                    ),
+                  )),
             ),
             const SizedBox(
               height: 60,
             ),
-            const Text("Passenger"),
+            const Text(
+              "Passenger",
+              style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold),
+            ),
             const SizedBox(
               height: 10,
             ),
             Center(
               child: InkWell(
-                onTap: () {
-                  Navigator.of(context).pushAndRemoveUntil(
-                      MaterialPageRoute(
-                          builder: (BuildContext context) =>
-                              const PassengerAuthGate()),
-                      (route) => true);
-                },
-                child: const GlowIcon(
-                  Icons.verified_user,
-                  size: 80,
-                  blurRadius: 9,
-                  color: Colors.blue,
-                ),
-              ),
+                  onTap: () {
+                    Navigator.of(context).pushAndRemoveUntil(
+                        MaterialPageRoute(
+                            builder: (BuildContext context) =>
+                                const PassengerAuthGate()),
+                        (route) => true);
+                  },
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(20),
+                    child: SizedBox(
+                      height: 100,
+                      width: 100,
+                      child: Card(
+                        elevation: 250,
+                        child: Padding(
+                          padding: const EdgeInsets.all(10),
+                          child: Image.asset("Assets/images/passenger.png"),
+                        ),
+                      ),
+                    ),
+                  )),
             ),
           ],
         ),

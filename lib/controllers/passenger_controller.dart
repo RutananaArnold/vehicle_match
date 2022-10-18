@@ -25,6 +25,7 @@ class PassengerController extends GetxController {
               pickupLocation: doc["pickupLocation"],
               seatsNumber: doc["seatsNumber"],
               timeOfDeparture: doc["timeOfDeparture"],
+              vehicleUserEmail: doc["vehicleUserEmail"],
               vehicleUserId: doc["vehicleUserId"]),
         );
       }

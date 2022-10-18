@@ -140,6 +140,7 @@ class _UploadVehicleState extends State<UploadVehicle> {
   Future<void> uploadSpec(String pickuplocation, String destLocation,
       String time, String date, String seats) {
     return requests.add({
+      'vehicleUserEmail': FirebaseAuth.instance.currentUser!.email,
       'vehicleUserId': FirebaseAuth.instance.currentUser!.uid,
       'pickupLocation': pickuplocation,
       'destLocation': destLocation,

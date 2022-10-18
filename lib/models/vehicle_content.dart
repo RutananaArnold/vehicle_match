@@ -4,6 +4,7 @@ class VehicleContents {
   String pickupLocation;
   String seatsNumber;
   String timeOfDeparture;
+  String vehicleUserEmail;
   String vehicleUserId;
   VehicleContents({
     required this.dateOfDeparture,
@@ -11,6 +12,7 @@ class VehicleContents {
     required this.pickupLocation,
     required this.seatsNumber,
     required this.timeOfDeparture,
+    required this.vehicleUserEmail,
     required this.vehicleUserId,
   });
 }
