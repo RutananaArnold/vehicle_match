@@ -25,7 +25,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
             ),
             const Center(
               child: GlowText(
-                "WELCOME!!",
+                "TRAVEL TOGETHER!!",
                 textAlign: TextAlign.center,
                 style: TextStyle(
                     color: Colors.black,

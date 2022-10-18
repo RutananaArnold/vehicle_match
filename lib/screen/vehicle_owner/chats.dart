@@ -1,8 +1,7 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:vehicle_match/controllers/vehicle_owner_chats_controller.dart';
-import 'package:vehicle_match/models/chat_user.dart';
 
 class VehicleOwnerChats extends StatefulWidget {
   const VehicleOwnerChats({Key? key}) : super(key: key);
@@ -12,54 +11,52 @@ class VehicleOwnerChats extends StatefulWidget {
 }
 
 class _VehicleOwnerChatsState extends State<VehicleOwnerChats> {
-  final ScrollController scrollController = ScrollController();
+  @override
+  void initState() {
+    super.initState();
+    vehicleOwnerChatController.getFirestoreChats();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: WillPopScope(
-      onWillPop: () {
-        return Future.value(false);
-      },
-      child: Stack(
-        children: [
-          Column(
-            children: [
-              Expanded(
-                child: StreamBuilder<QuerySnapshot>(
-                  stream: vehicleOwnerChatController.getFirestoreData(),
-                  builder: (BuildContext context,
-                      AsyncSnapshot<QuerySnapshot> snapshot) {
-                    if (snapshot.hasData) {
-                      if ((snapshot.data?.docs.length ?? 0) > 0) {
-                        return ListView.separated(
-                          shrinkWrap: true,
-                          itemCount: snapshot.data!.docs.length,
-                          itemBuilder: (context, index) => ListTile(
-                            title: Text(snapshot.data!.docs.first.id),
+        appBar: AppBar(
+          centerTitle: true,
+          title: const Text("Recent Chats"),
+          backgroundColor: Colors.green,
+          elevation: 0,
+        ),
+        body: GetBuilder<VehicleOwnerChatController>(
+            init: VehicleOwnerChatController(),
+            builder: (chatLogs) {
+              return ListView.builder(
+                  itemCount: chatLogs.chatsNow.length,
+                  itemBuilder: (context, index) {
+                    var chat = chatLogs.chatsNow[index];
+                    print(chat.content);
+                    if (chat.idTo == FirebaseAuth.instance.currentUser!.uid) {
+                      return Card(
+                        child: Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: ListTile(
+                            leading: const CircleAvatar(),
+                            title: Text(
+                              chat.idFrom,
+                              softWrap: true,
+                            ),
+                            subtitle: Text(
+                              chat.content,
+                              softWrap: true,
+                            ),
+                            onTap: (){},
                           ),
-                          // buildItem(context, snapshot.data?.docs[index]),
-                          controller: scrollController,
-                          separatorBuilder: (BuildContext context, int index) =>
-                              const Divider(),
-                        );
-                      } else {
-                        return const Center(
-                          child: Text('No user found...'),
-                        );
-                      }
-                    } else {
-                      return const Center(
-                        child: CircularProgressIndicator(),
+                        ),
                       );
+                    } else {
+                      return const SizedBox.shrink();
                     }
-                  },
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
-    ));
+                  });
+            }));
   }
 
   //  Widget buildItem(BuildContext context, DocumentSnapshot? documentSnapshot) {
