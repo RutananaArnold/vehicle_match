@@ -45,6 +45,7 @@ dependencies:
   get: ^4.6.5
   geolocator: ^8.2.0
   geocoding: ^2.0.4
+  flutter_chat_ui: ^1.6.5
 
 dev_dependencies:
   flutter_test:
