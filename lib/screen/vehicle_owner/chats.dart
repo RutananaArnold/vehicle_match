@@ -1,6 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:vehicle_match/controllers/chats_controller.dart';
 
 class VehicleOwnerChats extends StatefulWidget {
   const VehicleOwnerChats({Key? key}) : super(key: key);
@@ -19,84 +21,60 @@ class _VehicleOwnerChatsState extends State<VehicleOwnerChats> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          centerTitle: true,
-          title: const Text("Recent Chats"),
-          backgroundColor: Colors.green,
-          elevation: 0,
-        ),
-        body: Column(
-          children: [Text("No chats found")],
-        ));
-  }
+      appBar: AppBar(
+        centerTitle: true,
+        title: const Text("Recent Chats"),
+        backgroundColor: Colors.green,
+        elevation: 0,
+      ),
+      body: StreamBuilder<QuerySnapshot>(
+        stream: chatsHandler.getVehicleOwnerMessage(),
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (snapshot.hasError) {
+            return const Text(
+              'Something went wrong',
+              style: TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20),
+            );
+          }
 
-  //  Widget buildItem(BuildContext context, DocumentSnapshot? documentSnapshot) {
-  //   final firebaseAuth = FirebaseAuth.instance;
-  //   if (documentSnapshot != null) {
-  //     // ChatUser userChat = ChatUser.fromDocument(documentSnapshot);
-  //     if (userChat.uid == firebaseAuth.currentUser!.uid) {
-  //       return const SizedBox.shrink();
-  //     } else {
-  //       return TextButton(
-  //         onPressed: () {
-  //           if (KeyboardUtils.isKeyboardShowing()) {
-  //             KeyboardUtils.closeKeyboard(context);
-  //           }
-  //           Navigator.push(
-  //               context,
-  //               MaterialPageRoute(
-  //                   builder: (context) => ChatPage(
-  //                         peerId: userChat.uid,
-  //                         peerAvatar: userChat.email,
-  //                         peerNickname: userChat.displayName,
-  //                         userAvatar: firebaseAuth.currentUser!.photoURL!,
-  //                       )));
-  //         },
-  //         child: ListTile(
-  //           leading: userChat.email.isNotEmpty
-  //               ? ClipRRect(
-  //                   borderRadius: BorderRadius.circular(Sizes.dimen_30),
-  //                   child: Image.network(
-  //                     userChat.email,
-  //                     fit: BoxFit.cover,
-  //                     width: 50,
-  //                     height: 50,
-  //                     loadingBuilder: (BuildContext ctx, Widget child,
-  //                         ImageChunkEvent? loadingProgress) {
-  //                       if (loadingProgress == null) {
-  //                         return child;
-  //                       } else {
-  //                         return SizedBox(
-  //                           width: 50,
-  //                           height: 50,
-  //                           child: CircularProgressIndicator(
-  //                               color: Colors.grey,
-  //                               value: loadingProgress.expectedTotalBytes !=
-  //                                       null
-  //                                   ? loadingProgress.cumulativeBytesLoaded /
-  //                                       loadingProgress.expectedTotalBytes!
-  //                                   : null),
-  //                         );
-  //                       }
-  //                     },
-  //                     errorBuilder: (context, object, stackTrace) {
-  //                       return const Icon(Icons.account_circle, size: 50);
-  //                     },
-  //                   ),
-  //                 )
-  //               : const Icon(
-  //                   Icons.account_circle,
-  //                   size: 50,
-  //                 ),
-  //           title: Text(
-  //             userChat.displayName,
-  //             style: const TextStyle(color: Colors.black),
-  //           ),
-  //         ),
-  //       );
-  //     }
-  //   } else {
-  //     return const SizedBox.shrink();
-  //   }
-  // }
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+                child: Text(
+              "Loading",
+              style: TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20),
+            ));
+          }
+
+          return ListView(
+            children: snapshot.data!.docs.map((DocumentSnapshot document) {
+              Map<String, dynamic> data =
+                  document.data()! as Map<String, dynamic>;
+              print(data);
+              return  Card(
+                elevation: 200,
+                child: Padding(
+                  padding: EdgeInsets.only(top: 10, bottom: 10),
+                  child: ListTile(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(15),
+                            topRight: Radius.circular(15),
+                            bottomRight: Radius.circular(15),
+                            bottomLeft: Radius.circular(15))),
+                      onTap: (){},      
+                  ),
+                ),
+              );
+            }).toList(),
+          );
+        },
+      ),
+    );
+  }
 }

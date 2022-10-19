@@ -124,7 +124,7 @@ class _ChatPageState extends State<ChatPage> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text('Chatting with ${widget.peerEmail}'.trim()),
+        title: Text('${widget.peerEmail}'.trim()),
       ),
       body: SafeArea(
         child: Padding(
