@@ -29,6 +29,13 @@
             {
               "client_id": "1049017393316-j5q83v3m2e94qsqm66up7pf8msqc1vpi.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "1049017393316-mv9j7s1nngvhlipb54sn9p8bmblfl8m4.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.vehicleMatch"
+              }
             }
           ]
         }
